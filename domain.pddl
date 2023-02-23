@@ -22,8 +22,44 @@
         ; One predicate given for free!
         (hero-at ?loc - location)
 
-        ; IMPLEMENT ME
+        ; corridor is connected
+        (corridors-connected ?cor - corridor ?from ?to - location)
 
+        ; corridor is risky
+        (risky-corridor ?cor - corridor)
+
+        ; locked corridors with locked colors
+        (locked-corridor ?cor - corridor ?col - colour)
+
+        ; corridor is unlocked
+        (unlocked-corridor ?cor - corridor)
+
+        ; room is messy   ---> (double check)
+        (messy-room ?loc - location)
+
+        ; corridor can collapse
+        (collapsed-corridor ?cor - corridor)
+
+        ; key at the current location
+        (key-at ?k - key ?loc - location)
+
+        ; hero is holding a key
+        (holding-key ?k - key)
+
+        ; hero is not holding anything
+        (arm-free)
+        
+        ; Room loc that can unlock a corridor
+        (connected-room ?cor - corridor ?loc - location)
+
+        ; color of the key
+        (key-colour ?k - key ?col - colour)
+
+        ; key uses
+        (one-use ?k - key)
+        (two-use ?k - key)
+        (multi-use ?k - key)
+        (unusable ?k - key)
     )
 
     ; IMPORTANT: You should not change/add/remove the action names or parameters
@@ -39,14 +75,21 @@
         :parameters (?from ?to - location ?cor - corridor)
 
         :precondition (and
-
-            ; IMPLEMENT ME
-
+        (hero-at ?from)
+        (not (hero-at ?to))
+        (corridors-connected ?cor ?from ?to)
+        (unlocked-corridor ?cor)
         )
 
         :effect (and
-
-            ; IMPLEMENT ME
+        (not (hero-at ?from))
+        (hero-at ?to)
+        (and (messy-room ?to))
+        (when
+            (and (risky-corridor ?cor))
+            (and (collapsed-corridor ?cor))
+            )
+       
 
         )
     )
@@ -62,14 +105,17 @@
         :parameters (?loc - location ?k - key)
 
         :precondition (and
-
-            ; IMPLEMENT ME
+        (hero-at ?loc)
+        (key-at ?k ?loc)
+        (arm-free)
+        (not (holding-key ?k))
+        (not (messy-room ?loc))
 
         )
 
         :effect (and
-
-            ; IMPLEMENT ME
+        (not (arm-free))
+        (holding-key ?k) 
 
         )
     )
@@ -83,15 +129,15 @@
         :parameters (?loc - location ?k - key)
 
         :precondition (and
-
-            ; IMPLEMENT ME
+        (holding-key ?k)
+        (not (arm-free))
+        (hero-at ?loc)
 
         )
 
         :effect (and
-
-            ; IMPLEMENT ME
-
+        (arm-free)
+        (not (holding-key ?k))
         )
     )
 
@@ -109,15 +155,31 @@
         :parameters (?loc - location ?cor - corridor ?col - colour ?k - key)
 
         :precondition (and
-
-            ; IMPLEMENT ME
+        (not (arm-free))
+        (holding-key ?k)
+        (not (unusable ?k))
+        (locked-corridor ?cor ?col)
+        (key-colour ?k ?col)
+        (hero-at ?loc)
+        ; double check this
+        (connected-room ?cor ?loc)
 
         )
 
         :effect (and
+        (unlocked-corridor ?cor)
+        (when
+            (and (two-use ?k))
+            (and (one-use ?k)))
+            
+        (when
+            (and (one-use ?k))
+            (and (unusable ?k)))
 
-            ; IMPLEMENT ME
-
+        (when
+            (and (multi-use ?k))
+            (and (multi-use ?k)))
+        
         )
     )
 
@@ -130,14 +192,13 @@
         :parameters (?loc - location)
 
         :precondition (and
-
-            ; IMPLEMENT ME
+        (hero-at ?loc)
+        (messy-room ?loc)
 
         )
 
         :effect (and
-
-            ; IMPLEMENT ME
+        (not(messy-room ?loc))
 
         )
     )
