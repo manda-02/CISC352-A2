@@ -22,23 +22,26 @@
         ; One predicate given for free!
         (hero-at ?loc - location)
 
-        ; corridor is connected
-        (corridors-connected ?cor - corridor ?from ?to - location)
+        ; corridor exists
+        (corridors-exists ?cor - corridor ?from ?to - location)
 
         ; corridor is risky
         (risky-corridor ?cor - corridor)
 
         ; locked corridors with locked colors
-        (locked-corridor ?cor - corridor ?col - colour)
+        (locked-corridor-colour ?cor - corridor ?col - colour)
+        
+        ; locked corridors with locked colors - remove colour
+        (locked-corridor ?cor - corridor)
 
         ; corridor is unlocked
-        (unlocked-corridor ?cor - corridor)
+        ;(unlocked-corridor ?cor - corridor)
 
         ; room is messy   ---> (double check)
         (messy-room ?loc - location)
 
         ; corridor can collapse
-        (collapsed-corridor ?cor - corridor)
+        ;(collapsed-corridor ?cor - corridor)
 
         ; key at the current location
         (key-at ?k - key ?loc - location)
@@ -49,8 +52,8 @@
         ; hero is not holding anything
         (arm-free)
         
-        ; Room loc that can unlock a corridor
-        (connected-room ?cor - corridor ?loc - location)
+        ; Corridor is connected
+        (connected-corridor ?loc - location ?cor - corridor)
 
         ; color of the key
         (key-colour ?k - key ?col - colour)
@@ -72,27 +75,25 @@
     ;Effects move the hero, and collapse the corridor if it's "risky" (also causing a mess in the ?to location)
     (:action move
 
-        :parameters (?from ?to - location ?cor - corridor)
+        :parameters (?from ?to - location ?cor - corridor )
 
         :precondition (and
         (hero-at ?from)
-        (not (hero-at ?to))
-        (corridors-connected ?cor ?from ?to)
-        (unlocked-corridor ?cor)
+        (not(hero-at ?to))
+        (corridors-exists ?cor ?from ?to)
+        (not(locked-corridor ?cor))
         )
 
         :effect (and
-        (not (hero-at ?from))
         (hero-at ?to)
-        (and (messy-room ?to))
-        (when
-            (and (risky-corridor ?cor))
-            (and (collapsed-corridor ?cor))
+        (not (hero-at ?from))
+        (when 
+            (risky-corridor ?cor)
+            (and (messy-room ?to) (not(corridors-exists ?cor ?from ?to)) (not(corridors-exists ?cor ?to ?from)))
             )
-       
-
         )
     )
+    
 
     ;Hero can pick up a key if the
     ;    - hero is at current location ?loc,
@@ -114,9 +115,10 @@
         )
 
         :effect (and
-        (not (arm-free))
-        (holding-key ?k) 
-
+        (holding-key ?k)
+        (not(arm-free))
+        (not(key-at ?k ?loc))
+        
         )
     )
 
@@ -130,14 +132,14 @@
 
         :precondition (and
         (holding-key ?k)
-        (not (arm-free))
+        (not(arm-free))
         (hero-at ?loc)
-
         )
 
         :effect (and
-        (arm-free)
         (not (holding-key ?k))
+        (arm-free)
+        (key-at ?k ?loc)
         )
     )
 
@@ -155,19 +157,18 @@
         :parameters (?loc - location ?cor - corridor ?col - colour ?k - key)
 
         :precondition (and
-        (not (arm-free))
         (holding-key ?k)
         (not (unusable ?k))
-        (locked-corridor ?cor ?col)
+        (locked-corridor ?cor)
         (key-colour ?k ?col)
+        (locked-corridor-colour ?cor ?col)
         (hero-at ?loc)
         ; double check this
-        (connected-room ?cor ?loc)
-
+        (connected-corridor ?loc ?cor)
         )
 
         :effect (and
-        (unlocked-corridor ?cor)
+        (not(locked-corridor ?cor))
         (when
             (and (two-use ?k))
             (and (one-use ?k)))
@@ -176,9 +177,9 @@
             (and (one-use ?k))
             (and (unusable ?k)))
 
-        (when
-            (and (multi-use ?k))
-            (and (multi-use ?k)))
+        ; (when
+        ;     (and (multi-use ?k))
+        ;     (and (multi-use ?k)))
         
         )
     )

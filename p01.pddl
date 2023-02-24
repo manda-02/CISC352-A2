@@ -15,36 +15,49 @@
     ; Hero location and carrying status
      (hero-at loc-1-2)
      (arm-free)
-     (not (holding-key key1))
-     (not (holding-key key2))
-     (not (holding-key key3))
-     (not (holding-key key4))
+    
 
     ; Locationg <> Corridor Connections
-    (corridors-connected c1222 loc-1-2 loc-2-2) (corridors-connected c1222 loc-2-2 loc-1-2)
-    (corridors-connected c3132 loc-3-1 loc-3-2) (corridors-connected c3132 loc-3-2 loc-3-1)
-    (corridors-connected c2232 loc-2-2 loc-3-2) (corridors-connected c2232 loc-3-2 loc-2-2)
-    (corridors-connected c2223 loc-2-2 loc-2-3) (corridors-connected c2223 loc-2-3 loc-2-2)
-    (corridors-connected c3242 loc-3-2 loc-4-2) (corridors-connected c3242 loc-4-2 loc-3-2)
-    (corridors-connected c3233 loc-3-2 loc-3-3) (corridors-connected c3233 loc-3-3 loc-3-2)
-    (corridors-connected c2333 loc-2-3 loc-3-3) (corridors-connected c2333 loc-3-3 loc-2-3)
-    (corridors-connected c2324 loc-2-3 loc-2-4) (corridors-connected c2324 loc-2-4 loc-2-3)
-    (corridors-connected c3334 loc-3-3 loc-3-4) (corridors-connected c3334 loc-3-4 loc-3-3)
-    (corridors-connected c2434 loc-2-4 loc-3-4) (corridors-connected c2434 loc-3-4 loc-2-4)
-    (corridors-connected c3444 loc-3-4 loc-4-4) (corridors-connected c3444 loc-4-4 loc-3-4)
+    (corridors-exists c1222 loc-1-2 loc-2-2) (corridors-exists c1222 loc-2-2 loc-1-2)
+    (corridors-exists c3132 loc-3-1 loc-3-2) (corridors-exists c3132 loc-3-2 loc-3-1)
+    (corridors-exists c2232 loc-2-2 loc-3-2) (corridors-exists c2232 loc-3-2 loc-2-2)
+    (corridors-exists c2223 loc-2-2 loc-2-3) (corridors-exists c2223 loc-2-3 loc-2-2)
+    (corridors-exists c3242 loc-3-2 loc-4-2) (corridors-exists c3242 loc-4-2 loc-3-2)
+    (corridors-exists c3233 loc-3-2 loc-3-3) (corridors-exists c3233 loc-3-3 loc-3-2)
+    (corridors-exists c2333 loc-2-3 loc-3-3) (corridors-exists c2333 loc-3-3 loc-2-3)
+    (corridors-exists c2324 loc-2-3 loc-2-4) (corridors-exists c2324 loc-2-4 loc-2-3)
+    (corridors-exists c3334 loc-3-3 loc-3-4) (corridors-exists c3334 loc-3-4 loc-3-3)
+    (corridors-exists c2434 loc-2-4 loc-3-4) (corridors-exists c2434 loc-3-4 loc-2-4)
+    (corridors-exists c3444 loc-3-4 loc-4-4) (corridors-exists c3444 loc-4-4 loc-3-4)
 
     ; Key locations
     (key-at key1 loc-2-2)
     (key-at key2 loc-2-4)
     (key-at key3 loc-4-2)
     (key-at key4 loc-4-4)
+    
+    ; locked corridor
+    (locked-corridor c2324)
+    (locked-corridor c2434)
+    (locked-corridor c3242)
+    (locked-corridor c3444)
+    (locked-corridor c3132)
 
-    ; Locked corridors
-    (locked-corridor c2324 red)
-    (locked-corridor c2434 red)
-    (locked-corridor c3242 purple)
-    (locked-corridor c3444 yellow)
-    (locked-corridor c3132 rainbow)
+    ; Locked corridors colors
+    (locked-corridor-colour c2324 red)
+    (locked-corridor-colour c2434 red)
+    (locked-corridor-colour c3242 purple)
+    (locked-corridor-colour c3444 yellow)
+    (locked-corridor-colour c3132 rainbow)
+    
+    ; room that can unlock corridor
+    (connected-corridor loc-2-3 c2324)
+    (connected-corridor loc-2-4 c2434)
+    (connected-corridor loc-2-4 c2324)
+    (connected-corridor loc-3-4 c2434)
+    (connected-corridor loc-3-2 c3242)
+    (connected-corridor loc-3-4 c3444)
+    (connected-corridor loc-3-2 c3132)
 
     ; Risky corridors
     (risky-corridor c2324)
@@ -61,6 +74,7 @@
     (two-use key2)
     (one-use key3)
     (one-use key4)
+    
 
   )
   (:goal
