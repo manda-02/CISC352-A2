@@ -22,7 +22,7 @@
     ; Locating <> Corridor Connections
     (corridors-exists c1121 loc-1-1 loc-2-1) (corridors-exists c1121 loc-2-1 loc-1-1)
     (corridors-exists c2122 loc-2-1 loc-2-2) (corridors-exists c2122 loc-2-2 loc-2-1)
-    (corridors-exists c2223 loc-2-2 loc-2-3) (corridors-exists c2223 loc-2-3 loc-2-2)
+    ;(corridors-exists c2223 loc-2-2 loc-2-3) (corridors-exists c2223 loc-2-3 loc-2-2)
     (corridors-exists c2324 loc-2-3 loc-2-4) (corridors-exists c2324 loc-2-4 loc-2-3)
     (corridors-exists c2425 loc-2-4 loc-2-5) (corridors-exists c2425 loc-2-5 loc-2-4)
     (corridors-exists c2232 loc-2-2 loc-3-2) (corridors-exists c2232 loc-3-2 loc-2-2)
@@ -33,17 +33,18 @@
     ; Locked corridors
     (locked-corridor c2425)
     (locked-corridor c2324)
-    (locked-corridor c2333)
-    (locked-corridor c3242)
+    ;(locked-corridor c2333)
+    ;(locked-corridor c3242)
     (locked-corridor c2232)
     (locked-corridor c2122)
     (locked-corridor c1121)
     
+    
     ; color of locks for the corridors
     (locked-corridor-colour c2425 yellow)
     (locked-corridor-colour c2324 red)
-    (locked-corridor-colour c2333 red)
-    (locked-corridor-colour c3242 red)
+    ;(locked-corridor-colour c2333 red)
+    ;(locked-corridor-colour c3242 red)
     (locked-corridor-colour c2232 purple)
     (locked-corridor-colour c2122 green)
     (locked-corridor-colour c1121 rainbow)
@@ -54,10 +55,10 @@
     (connected-corridor loc-2-4 c2425)
     (connected-corridor loc-2-4 c2324)
     (connected-corridor loc-2-3 c2324)
-    (connected-corridor loc-2-3 c2333)
-    (connected-corridor loc-3-3 c2333)
+    ;(connected-corridor loc-2-3 c2333)
     ;(connected-corridor loc-3-3 c2333)
-    (connected-corridor loc-3-2 c3242)
+    ;(connected-corridor loc-3-3 c2333)
+    ;(connected-corridor loc-3-2 c3242)
     (connected-corridor loc-3-2 c2232)
     (connected-corridor loc-2-2 c2232)
     (connected-corridor loc-2-2 c2122)
@@ -68,9 +69,9 @@
  
 
     ; Risky corridors
-    (risky-corridor c3242)
+    ;(risky-corridor c3242)
     (risky-corridor c2324)
-    (risky-corridor c2333)
+    ;(risky-corridor c2333)
     
     ; Key locations
     (key-at key1 loc-2-5)
@@ -101,3 +102,4 @@
   )
 
 )
+
